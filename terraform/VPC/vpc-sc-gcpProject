@@ -1,0 +1,27 @@
+locals { 
+  agency_vpc_sc_configs = {
+    dev = { 
+        project_id = "project-id-dev"
+        addition_perimeter_members   = []
+        additional_egress_policies   = []
+        additional_ingress_policies  = []
+    }
+      test = { 
+        project_id = "project-id-test"
+        addition_perimeter_members   = []
+        additional_egress_policies   = []
+        additional_ingress_policies  = []
+      }
+    prod = { 
+        project_id = "project-id-prod"
+        addition_perimeter_members   = []
+        additional_egress_policies   = []
+        additional_ingress_policies  = []
+    }
+  }
+}
+
+module "agency_vpc_sc" {
+  source = "gcp module link from hashicorp tf"
+  
+      
