@@ -1,0 +1,87 @@
+#setting up ingress policies to allow specified members/groups to specified gcp services for a specific environment/project 
+access_context_manager_policy_id = "project_id# here"
+terraformServiceAccount = "terraformServiceAccountEmailHere@iam.gserviceaccount.com"
+hubProjectNumber = "project number here"
+ingestionProjectnumber = "ingestion project number here"
+  "dev"   = "dev project number here"
+  "test"  = "test project number here 
+  "prod"  = "prod project number here" 
+
+gcpProject_standard_ingress_policies = {
+  dev = [
+    {
+      from = { 
+        "sources" = { 
+          access_levels = [*]
+          },
+          "identityType" = "Identity type unspecified"
+          "identities" = ["serviceAccount: gcpDEVServiceAccount@serviceaccount.com"]
+        }
+
+        to = {
+          "operations" = {
+            "service.googleapis.com" = {
+            # allows for all methods to go to the defined service for the dev environment
+              methods = ["*"] 
+              #allows all permissions for the defined service for the dev environment
+              permissions = [] 
+            }
+          }
+        }
+      }
+    }
+  ]
+  test = [
+    {
+       from = { 
+        "sources" = { 
+          access_levels = [*]
+          },
+          "identityType" = "Identity type unspecified"
+          "identities" = ["serviceAccount: gcpTESTServiceAccount@serviceaccount.com"]
+        }
+
+        to = {
+          "operations" = {
+            "service.googleapis.com" = {
+            # allows for all methods to go to the defined service for the test environment
+              methods = ["*"] 
+              #allows all permissions for the defined service for the test environment 
+              permissions = [] 
+            }
+          }
+        }
+      }
+    }
+    
+     prod = [
+    {
+       from = { 
+        "sources" = { 
+          access_levels = [*]
+          },
+          "identityType" = "Identity type unspecified"
+          #assigning users or groups access to specific environment and the services within
+          "identities" = ["serviceAccount: gcpPRODServiceAccount@serviceaccount.com", "user:gcpUserID@gmail.com", "group:gcpGroupEmail@gmail.com"]
+        }
+
+        to = {
+          "operations" = {
+            "bigquery.googleapis.com" = {
+              # allows for all methods to access BigQuery for the PROD environment
+              methods = ["*"] 
+              #allows all permissions BigQuery for the PROD environment 
+              permissions = [] 
+            }
+        to = {
+          "operations" = {
+            "storage.googleapis.com" = { 
+              methods = ["*"]  
+              #allows all permissions defined above to publish to gcs buckets in respective project and environment 
+              permissions = [] 
+          }
+        }
+      }
+    }
+  ]
+        
